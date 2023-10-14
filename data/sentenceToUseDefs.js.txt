@@ -1,0 +1,54 @@
+var a = "aba".split('');
+function getLetterInfo(cVal) {
+	let node = document.querySelector(`[data-unicode="${cVal}"]`);
+	if(node == null && cVal == " ") {
+		return ({
+			 id: null
+			,width: 50.0
+			,height: null
+		});
+	}
+	let rect = node.querySelector("rect");
+	let thisLetterValues = ({
+		 id: node.id
+		,width: parseFloat(rect.getAttribute("width"))
+		,height: parseFloat(rect.getAttribute("height"))
+	});
+	return thisLetterValues;
+}
+var sentenceInfo = a.reduce((acc,cur,ci,[])=> {
+	if(ci==1) {
+		return [getLetterInfo(acc),getLetterInfo(cur)]
+	} else {
+		acc.push(getLetterInfo(cur))
+		return acc
+	}
+});
+function letterInfoToUseHTMLSnippet(letterInfo,xOffset,y) {
+	if(letterInfo.id != null) {
+		return `<use href="#${letterInfo.id}" x="${xOffset}" y="${y-letterInfo.height}" />`;
+	} else {
+		return "";
+	}
+}
+var htmlSnipBlob = sentenceInfo.reduce((acc,cur,ci,[])=> {
+	if(ci==1) {
+		var a = letterInfoToUseHTMLSnippet(acc,0,100);
+		var b = letterInfoToUseHTMLSnippet(cur,acc.width,100);
+		//console.log("acc.width + cur.width", acc.width + cur.width);
+		return ({
+			 r: a + "\n\t" + b + "\n\t"
+			,t: acc.width + cur.width
+		});
+	} else {
+		//console.log("else acc=",acc);
+		var b = letterInfoToUseHTMLSnippet(cur,acc.t,100)
+		acc.r += b + "\n\t";
+		acc.t += cur.width;
+		return acc;
+	}
+})
+var g = document.createElementNS("http://www.w3.org/2000/svg","g");
+g.innerHTML = htmlSnipBlob.r;
+document.querySelector("defs").after(g)
+
