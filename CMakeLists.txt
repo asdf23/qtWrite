@@ -24,6 +24,7 @@ qt_add_qml_module(writeboard
               "scripts/script.js"
               "scripts/simplifyScript.js"
               "scripts/glypabet.js"
+              "scripts/sentenceToUseDefs.js"
 )
 
 set_target_properties(writeboard PROPERTIES

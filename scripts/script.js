@@ -135,9 +135,9 @@ function defMetaArrayToSVG(defMetaArray) {
 	//console.log("defMetaArray:", JSON.stringify(defMetaArray));
 	return defMetaArray.reduce((acc,cur,i) => {
 		if(acc == null) { 
-			return `<g id="${cur.id.replace(/^glyph_/,'group_')}" stroke="#000" data-unicode="${cur.unicode}" data-glyph-name="${cur.char}"><rect id=".replace(/^glyph_/,'padding_')" x="${Math.min(0,cur.leftMargin)}" y="0" width="${cur.leftMargin+cur.rightMargin+cur.anchorPoint.width}" height="${cur.anchorPoint.y}" fill="transparent" stroke-width=".06"/><path id="${cur.id.replace(/^glyph_/,'plot_')}" stroke-width="4" fill="transparent" d="${cur.dPath}"/></g>`;
+			return `<g id="${cur.id.replace(/^glyph_/,'group_')}" stroke="#000" data-unicode="${cur.unicode}" data-glyph-name="${cur.char}"><rect id="${cur.id.replace(/^glyph_/,'padding_')}" x="${Math.min(0,cur.leftMargin)}" y="0" width="${cur.leftMargin+cur.rightMargin+cur.anchorPoint.width}" height="${cur.anchorPoint.y}" fill="transparent" stroke-width=".06"/><path id="${cur.id.replace(/^glyph_/,'plot_')}" stroke-width="4" fill="transparent" d="${cur.dPath}"/></g>`;
 		} else {
-			return acc + `<g id="${cur.id.replace(/^glyph_/,'group_')}" stroke="#000" data-unicode="${cur.unicode}" data-glyph-name="${cur.char}"><rect id=".replace(/^glyph_/,'padding_')" x="${Math.min(0,cur.leftMargin)}" y="0" width="${cur.leftMargin+cur.rightMargin+cur.anchorPoint.width}" height="${cur.anchorPoint.y}" fill="transparent" stroke-width=".06"/><path id="${cur.id.replace(/^glyph_/,'plot_')}" stroke-width="4" fill="transparent" d="${cur.dPath}"/></g>`;
+			return acc + `<g id="${cur.id.replace(/^glyph_/,'group_')}" stroke="#000" data-unicode="${cur.unicode}" data-glyph-name="${cur.char}"><rect id="${cur.id.replace(/^glyph_/,'padding_')}" x="${Math.min(0,cur.leftMargin)}" y="0" width="${cur.leftMargin+cur.rightMargin+cur.anchorPoint.width}" height="${cur.anchorPoint.y}" fill="transparent" stroke-width=".06"/><path id="${cur.id.replace(/^glyph_/,'plot_')}" stroke-width="4" fill="transparent" d="${cur.dPath}"/></g>`;
 		}
 	}, null);
 }

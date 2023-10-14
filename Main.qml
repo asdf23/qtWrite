@@ -5,6 +5,7 @@ import FileOperations 1.0
 import "scripts/script.js" as MyScript
 import "scripts/simplifyScript.js" as SimplifyScript
 import "scripts/glypabet.js" as Glypabet
+import "scripts/sentenceToUseDefs.js" as SentenceBuilder
 
 Window {
 	id: window
@@ -192,9 +193,9 @@ Window {
 			// console.log("-----");
 			window.svgDefs = svgDefsString;
 			//console.log("defs set", window.svgDefs);
-
-			var svgStrokes = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><defs>${window.svgDefs}</defs></svg>`;
-
+			var sampleText = SentenceBuilder.buildSentence("The quick brown fox jumped over the lazy dog.", false, defMetas);
+			var svgStrokes = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200"><defs>${window.svgDefs}</defs><g transform="scale(0.2)">${sampleText}</g></svg>`;
+			image1.source = `data:image/svg+xml;utf8,${svgStrokes}`;
 			cppCallBackTest.saveSVG(svgStrokes);
 		}
 
@@ -565,6 +566,7 @@ Window {
 		//var svgStrokes = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200">${svgOffsetPath}${svgLetterPath}${svgLetterPath2}</svg>`;
 		//var svgDefsString = `<defs>${window.svgDefs}</defs>`;
 		//console.log("svgDefsString", svgDefsString);
+		//var sampleText = SentenceBuilder.buildSentence("The quick brown fox jumped over the lazy dog.", false, defMetas);
 		var svgStrokes = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><defs>${window.svgDefs}</defs>${svgOffsetPath}${svgBottomPath}${svgLetterPath}</svg>`;
 		//console.log(svgLetterPath.replace(/ /g," \n"));
 		//console.log(svgStrokes);
