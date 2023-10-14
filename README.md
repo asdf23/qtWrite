@@ -37,7 +37,8 @@ To use:
 		In the lower screen draw the first letter, adjust the spacing and curvature, when it's ready click on the letter "a", this will save the data in the ./data directory and reset the tool for letter "b"
 		The next button (back) will clear the drawing. Use this to clear the current letter.
 		The next button (refresh) will generate a svg file. This file will be used to genreate the font and/or to draw your text.
-		To draw text open the svg file. A separate script is included. Set the text then execute the script. This will place the letters on the page.
+		To draw text open the svg file. A separate script is included (./data/sentenceToUseDefs.js.txt). Open the savedGlyph.svg file in a browser, set the text in line one of the file then execute the script from the console. 
+  		  This will place the letters on the page adjusting for spacing between the letters.
 		In a future version the next button (save - missing) will generate a woff file.
 		To generate gcode you could use a tool like juicy. I would integrate this but currently there is no GUI to capture the text.
 		
