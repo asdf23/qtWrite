@@ -78,36 +78,18 @@ Window {
 		onClicked: {
 			console.log("letter click detected");
 			var glyphID = Glypabet.glyphs.find(f=> f.char == MyScript.letterArray[MyScript.currentLetterIndex] ).id;
+			console.log("-------- SAVED -----------");
 			qml_saveLetter(glyphID);
-			qml_setNextLetter();
-/*			if( rectCanvas.strokes.length > 0 ) {
-				console.log("some strokes detected");
-				//console.log("rectCanvas.strokes", JSON.stringify(rectCanvas.strokes));
-				//console.log("MyScript._flat(rectCanvas.strokes)", JSON.stringify(MyScript._flat(rectCanvas.strokes)));
+			console.log("-------- /SAVED -----------");
+			console.log("-------- NEXT LETTER -----------");
+			var letterFound = qml_setNextLetter(false);
+			console.log("-------- /NEXT LETTER -----------");
+			if(letterFound) {
+				console.log("loading old letter");
 				qml_reDrawTextDisplay();
-				//var flatStrokes = MyScript._flat(rectCanvas.strokes);
-				//var xInfo = MyScript.getGreatestXDistance(flatStrokes);
-				//var dInfo = MyScript.getPointDistances(flatStrokes);
-				//console.log("dInfo:(" + dInfo.length + ")", dInfo[0], " --> ", dInfo[dInfo.length - 1]);
-				//dInfo = MyScript.setArrayToLengthRepeatingLastEntryIfNeccessary(dInfo, 1);
-				//					//console.log("MyScript.convertPointsToCurve2(rectCanvas.strokes, [0.5, 0.6, 0.7, 0.8], dInfo, xInfo);");
-				//					//console.log("rectCanvas.strokes:", rectCanvas.strokes);
-				//					//console.log("dInfo", dInfo);
-				//					//console.log("xInfo", JSON.stringify(xInfo));
-				//var svgPath = MyScript.convertPointsToCurve2(rectCanvas.strokes, [0.5], dInfo, xInfo);
-				////console.log("svgPath(" + svgPath.length + ")[0]=", JSON.stringify(svgPath[0]));
-				//					//console.log("=svgPath",JSON.stringify(svgPath));
-				//					//console.log("/MyScript.convertPointsToCurve2(rectCanvas.strokes, [0.5, 0.6, 0.7, 0.8], dInfo, xInfo);");
-				////MyScript.convertPointsToCurve(rectCanvas.strokes[0], 0.8)
-				//var svgStrokes = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><path fill="transparent" stroke-width="3" stroke="royalblue" d="` + svgPath.join(`" /><path fill="transparent" stroke-width="3" stroke="royalblue" d="`) + `" /></svg>`
-				//console.log("svg:", svgStrokes);
-				//image1.source =  svgStrokes;
-			}*/
-			rectCanvas.strokes = [];
-			rectCanvas.currentStrokePoints = [];
-			sliderYOffset.value = 0;
-			//sliderDistance.to = 1;
-			image1.source = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><path fill="orange" stroke="royalblue" d="L 150 50 L 100 150 z" /></svg>`
+			} else {
+				image1.source = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><path fill="orange" stroke="royalblue" d="L 150 50 L 100 150 z" /></svg>`
+			}
 			mycanvas.qml_clear();
 		}
 		function qml_saveLetter(glyphID) {
@@ -118,8 +100,7 @@ Window {
 			console.log("sliderLeftPadding.value", sliderLeftPadding.value);
 			console.log("sliderRightPadding.value", sliderRightPadding.value);
 			console.log("sliderYOffset.value", sliderYOffset.value);
-			cppCallBackTest.saveDataToFile(  glyphID
-											,JSON.stringify({
+			var saveObj = JSON.stringify({
 												 id: glyphID
 												,dPath: MyScript.strokeToDPath(rectCanvas.strokes, sliderCurvature.value, sliderDistance.value)
 												,leftMargin: sliderLeftPadding.value
@@ -129,21 +110,51 @@ Window {
 													,x: Math.min(0,sliderLeftPadding.value)
 													,width: metaData.width
 												}
-												//d,sketch: rectCanvas.strokes
-											})
-			);
+												,sketch: rectCanvas.strokes
+												,curve: sliderCurvature.value 
+												,tolerance: sliderDistance.value
+											});
+			cppCallBackTest.saveDataToFile(glyphID,saveObj);
+			
 			console.log("saved letter");
 		}
-		function qml_setNextLetter() {
+		function qml_setNextLetter(skipIncrement) {
+			var retVal = false;
+
+
 			console.log("currently " + MyScript.letterArray[MyScript.currentLetterIndex]);
 			//return letterArray[MyScript.currentLetterIndex];
-			MyScript.setCurrentLetterIndex(MyScript.currentLetterIndex+1);
-			if( MyScript.currentLetterIndex >= MyScript.letterArray.length ) {
-				//MyScript.currentLetterIndex = 0;
-				MyScript.setCurrentLetterIndex(0);
+			if(!skipIncrement) {
+				MyScript.setCurrentLetterIndex(MyScript.currentLetterIndex+1);
+				if( MyScript.currentLetterIndex >= MyScript.letterArray.length ) {
+					//MyScript.currentLetterIndex = 0;
+					MyScript.setCurrentLetterIndex(0);
+				}
+				console.log("to " + MyScript.letterArray[MyScript.currentLetterIndex]);
 			}
-			console.log("to " + MyScript.letterArray[MyScript.currentLetterIndex]);
-			textCurrentLetter.text = MyScript.letterArray[MyScript.currentLetterIndex]
+			textCurrentLetter.text = MyScript.letterArray[MyScript.currentLetterIndex];
+
+			var defMeta = qml_loadLetter(MyScript.currentLetterIndex);
+			if(defMeta != null) {
+				rectCanvas.strokes = defMeta.sketch;
+				//console.log("set rectCanvas.strokes to" , JSON.stringify(rectCanvas.strokes));
+				//console.log("rectCanvas.strokes.length" , rectCanvas.strokes.length);
+				rectCanvas.currentStrokePoints = [];
+				sliderLeftPadding.value = defMeta.leftMargin;
+				sliderRightPadding.value = defMeta.rightMargin;
+				sliderYOffset.value = defMeta.anchorPoint.y;
+				sliderCurvature.value = defMeta.curve;
+				sliderDistance.value = defMeta.tolerance;
+				retVal = true;
+			} else {
+				rectCanvas.strokes = [];
+				rectCanvas.currentStrokePoints = [];
+				sliderLeftPadding.value = 0;
+				sliderRightPadding.value = 0;
+				sliderYOffset.value = 0;
+				retVal = false;
+			}
+			return retVal;
 		}
 	}
 	Button {
@@ -560,6 +571,7 @@ Window {
 		//var svgLetterPath = `<path fill="transparent" stroke-width="1" stroke="black" d="` + svgLetterPathDObj.StrokesToWrite.join(`" /><path fill="transparent" stroke-width="1" stroke="black" d="`) + `" />`;
 		//var svgLetterPath2 = `<path fill="transparent" stroke-width="1" stroke="yellow" d="` + svgLetterPathDObj2.StrokesToWrite.join(`" /><path fill="transparent" stroke-width="1" stroke="yellow" d="`) + `" />`;
 		var svgLetterPath = `<path fill="transparent" stroke-width="1" stroke="black" d="` + MyScript.strokeToDPath(rectCanvas.strokes, sliderCurvature.value, sliderDistance.value) + `" />`;
+		//console.log("svgLetterPath", svgLetterPath);
 		//attempt to use a different simplify engine, seems to get same results
 		//var svgLetterPath = `<path fill="transparent" stroke-width="1" stroke="black" d="` + MyScript.strokeToDPath(SimplifyScript.simplify(rectCanvas.strokes,sliderCurvature.value,false), sliderCurvature.value, sliderDistance.value) + `" />`;
 
@@ -571,6 +583,22 @@ Window {
 		//console.log(svgLetterPath.replace(/ /g," \n"));
 		//console.log(svgStrokes);
 		image1.source =  svgStrokes;
+	}
+	function qml_loadLetter(currentLetterIndex) {
+		var glyphObj = Glypabet.glyphs.find(f=> f.char == MyScript.letterArray[currentLetterIndex] );
+		var glyphID = glyphObj.id;
+		console.log("loading", glyphID);
+		var defMeta = cppCallBackTest.loadLetter(glyphID);
+		//console.log("loaded", defMeta);
+		defMeta = JSON.parse(defMeta);
+		if(defMeta != null) {
+			console.log("found letter on disk loading..");
+			return defMeta;
+		} else {
+			console.log("no letter found");
+			return null;
+		}
+		//return defMeta;
 	}
 	function qml_loadLetters(currentLetterIndex) {
 		var results = [];
@@ -592,4 +620,7 @@ Window {
 		}
 		return results;
 	}
+	Component.onCompleted: {
+    	nextLetterButton.qml_setNextLetter(true);
+    }
 }

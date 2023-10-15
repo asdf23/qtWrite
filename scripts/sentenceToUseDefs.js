@@ -98,4 +98,4 @@ function buildSentence(text, insertDOM, glyphDataArray) {
 	} 
 	return htmlSnipBlob.r;
 }
-buildSentence("The quick brown fox jumped over the lazy dog.", false, glyphData);
+//buildSentence("The quick brown fox jumped over the lazy dog.", false, glyphData);
