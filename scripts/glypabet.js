@@ -2,6 +2,15 @@
 
 let glyphs = [
     {
+        "id": "glyph_space",
+        "glyphName": "space",
+        "unicode": " ",
+        "char": " ",
+        "_notStandard": true
+    },
+
+
+    {
         "id": "glyph_ampersand",
         "glyphName": "ampersand",
         "unicode": "&#x26;",
@@ -196,8 +205,8 @@ let glyphs = [
     {
         "id": "glyph_closed_curly_brace",
         "glyphName": "braceright",
-        "unicode": "{",
-        "char": "{"
+        "unicode": "}",
+        "char": "}"
     },
     {
         "id": "glyph_closed_parenthesis",
@@ -208,8 +217,8 @@ let glyphs = [
     {
         "id": "glyph_closed_square_bracket",
         "glyphName": "bracketright",
-        "unicode": "[",
-        "char": "["
+        "unicode": "]",
+        "char": "]"
     },
     {
         "id": "glyph_colon",

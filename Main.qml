@@ -77,7 +77,7 @@ Window {
 		}
 		onClicked: {
 			console.log("letter click detected");
-			var glyphID = Glypabet.glyphs.find(f=> f.char == MyScript.letterArray[MyScript.currentLetterIndex] ).id;
+			var glyphID = Glypabet.glyphs.find(f=> f.char == (MyScript.currentLetterIndex == -1 ? " " : (MyScript.letterArray[MyScript.currentLetterIndex])) ).id;
 			console.log("-------- SAVED -----------");
 			qml_saveLetter(glyphID);
 			console.log("-------- /SAVED -----------");
@@ -118,21 +118,29 @@ Window {
 			
 			console.log("saved letter");
 		}
-		function qml_setNextLetter(skipIncrement) {
+		function qml_setNextLetter(doInit) {
 			var retVal = false;
 
-
-			console.log("currently " + MyScript.letterArray[MyScript.currentLetterIndex]);
+			if(doInit) {
+				//MyScript.currentLetterIndex = -1;
+				MyScript.setCurrentLetterIndex(-1);
+				console.log("currently ","default character and space");
+			} else {
+				console.log("currently " + MyScript.letterArray[MyScript.currentLetterIndex]);
+			}				
 			//return letterArray[MyScript.currentLetterIndex];
-			if(!skipIncrement) {
+			if(!doInit) {
 				MyScript.setCurrentLetterIndex(MyScript.currentLetterIndex+1);
 				if( MyScript.currentLetterIndex >= MyScript.letterArray.length ) {
 					//MyScript.currentLetterIndex = 0;
 					MyScript.setCurrentLetterIndex(0);
 				}
 				console.log("to " + MyScript.letterArray[MyScript.currentLetterIndex]);
+				textCurrentLetter.text = MyScript.letterArray[MyScript.currentLetterIndex];
+			} else {
+				textCurrentLetter.text = "_!";
 			}
-			textCurrentLetter.text = MyScript.letterArray[MyScript.currentLetterIndex];
+			
 
 			var defMeta = qml_loadLetter(MyScript.currentLetterIndex);
 			if(defMeta != null) {
@@ -197,15 +205,16 @@ Window {
 		onClicked: {
 			console.log("refresh");
 			var defMetas = qml_loadLetters(MyScript.currentLetterIndex);
-			console.log("defMetas", JSON.stringify(defMetas))
+			//console.log("defMetas", JSON.stringify(defMetas))
 			var svgDefsString = MyScript.defMetaArrayToSVG(defMetas);
 			// console.log("-----");
 			// console.log("svgDefsString", JSON.stringify(svgDefsString));
 			// console.log("-----");
 			window.svgDefs = svgDefsString;
 			//console.log("defs set", window.svgDefs);
-			var sampleText = SentenceBuilder.buildSentence("The quick brown fox jumped over the lazy dog.", false, defMetas);
-			var svgStrokes = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200"><defs>${window.svgDefs}</defs><g transform="scale(0.2)">${sampleText}</g></svg>`;
+			var sampleTextLine1 = SentenceBuilder.buildSentence("The quick brown fox jumped over the lazy dog.", false, defMetas, 100);
+			var sampleTextLine2 = SentenceBuilder.buildSentence("0123456789!@#$%^&*()-=_+", false, defMetas, 200);
+			var svgStrokes = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200"><defs>${window.svgDefs}</defs><g transform="scale(0.2)">${sampleTextLine1}${sampleTextLine2}</g></svg>`;
 			image1.source = `data:image/svg+xml;utf8,${svgStrokes}`;
 			cppCallBackTest.saveSVG(svgStrokes);
 		}
@@ -585,7 +594,7 @@ Window {
 		image1.source =  svgStrokes;
 	}
 	function qml_loadLetter(currentLetterIndex) {
-		var glyphObj = Glypabet.glyphs.find(f=> f.char == MyScript.letterArray[currentLetterIndex] );
+		var glyphObj = Glypabet.glyphs.find(f=> f.char == ((currentLetterIndex == -1) ? " " : MyScript.letterArray[currentLetterIndex]));
 		var glyphID = glyphObj.id;
 		console.log("loading", glyphID);
 		var defMeta = cppCallBackTest.loadLetter(glyphID);
@@ -602,8 +611,11 @@ Window {
 	}
 	function qml_loadLetters(currentLetterIndex) {
 		var results = [];
-		for(var i=0; i<currentLetterIndex; i++) {
-			var glyphObj = Glypabet.glyphs.find(f=> f.char == MyScript.letterArray[i] );
+		for(var i= -1; i<Glypabet.glyphs.length; i++) {
+			var glyphObj = Glypabet.glyphs.find(f=> f.char == (i==-1 ? " " : MyScript.letterArray[i]) );
+			if(glyphObj == null) {
+				console.log("failed to find", MyScript.letterArray[i]);
+			}
 			var glyphID = glyphObj.id;
 			console.log("loading", glyphID);
 			var defMeta = cppCallBackTest.loadLetter(glyphID);
@@ -615,7 +627,7 @@ Window {
 				defMeta["unicode"] = glyphObj.unicode;
 				defMeta["char"] = glyphObj.char;
 				results.push( defMeta );
-				console.log("loaded", defMeta);
+				//console.log("loaded", defMeta);
 			}
 		}
 		return results;
