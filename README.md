@@ -46,3 +46,6 @@ Need help:
 Not sure how to resolve dependanies and run on other OS's
 Not familiar with QML, I want to open a sepate window, for unrelated GUI inputs
 
+The application is pretty ugly, The following screen shows a preview of the text to be generated
+![image](https://github.com/asdf23/qtWrite/assets/4165735/967dee03-03d6-47ad-9022-a5dbe5bf55a5)
+
