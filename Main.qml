@@ -214,7 +214,9 @@ Window {
 			//console.log("defs set", window.svgDefs);
 			var sampleTextLine1 = SentenceBuilder.buildSentence("The quick brown fox jumped over the lazy dog.", false, defMetas, 100);
 			var sampleTextLine2 = SentenceBuilder.buildSentence("0123456789!@#$%^&*()-=_+", false, defMetas, 200);
-			var svgStrokes = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200"><defs>${window.svgDefs}</defs><g transform="scale(0.2)">${sampleTextLine1}${sampleTextLine2}</g></svg>`;
+			var sampleTextLine3 = SentenceBuilder.buildSentence("Frog Zebra Tattoo", false, defMetas, 300);
+			var sampleTextLine4 = SentenceBuilder.buildSentence("ABCDEF", false, defMetas, 400);
+			var svgStrokes = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200"><defs>${window.svgDefs}</defs><g transform="scale(0.2)">${sampleTextLine1}${sampleTextLine2}${sampleTextLine3}${sampleTextLine4}</g></svg>`;
 			image1.source = `data:image/svg+xml;utf8,${svgStrokes}`;
 			cppCallBackTest.saveSVG(svgStrokes);
 		}
@@ -634,5 +636,6 @@ Window {
 	}
 	Component.onCompleted: {
     	nextLetterButton.qml_setNextLetter(true);
+    	qml_reDrawTextDisplay();
     }
 }
