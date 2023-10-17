@@ -598,7 +598,7 @@ Window {
 	function qml_loadLetter(currentLetterIndex) {
 		var glyphObj = Glypabet.glyphs.find(f=> f.char == ((currentLetterIndex == -1) ? " " : MyScript.letterArray[currentLetterIndex]));
 		var glyphID = glyphObj.id;
-		console.log("loading", glyphID);
+		//console.log("loading", glyphID);
 		var defMeta = cppCallBackTest.loadLetter(glyphID);
 		//console.log("loaded", defMeta);
 		defMeta = JSON.parse(defMeta);
@@ -619,7 +619,7 @@ Window {
 				console.log("failed to find", MyScript.letterArray[i]);
 			}
 			var glyphID = glyphObj.id;
-			console.log("loading", glyphID);
+			//console.log("loading", glyphID);
 			var defMeta = cppCallBackTest.loadLetter(glyphID);
 			if(defMeta != "null") {
 				//let letterData = cppCallBackTest.loadLetter(glyphID);

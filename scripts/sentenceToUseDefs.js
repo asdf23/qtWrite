@@ -53,7 +53,7 @@ function getLetterInfo(cVal) {
 	}
 }
 function letterInfoToUseHTMLSnippet(letterInfo,xOffset,y) {
-	console.log("letterInfo.useDefault", letterInfo.useDefault);
+	//console.log("letterInfo.useDefault", letterInfo.useDefault);
 	if(letterInfo != null && letterInfo.id != null && letterInfo.originalRequestedChar != " " ) {
 		//console.log("xOffset", xOffset);
 		//console.log("letterInfo", letterInfo);
@@ -89,6 +89,9 @@ function buildSentence(text, insertDOM, glyphDataArray, yOffset) {
 		var glyphDataObj_defaultChar = glyphDataArray.find(f=>f.char == " ");
 		//console.log("default charcter", JSON.stringify(glyphDataObj_defaultChar));
 		sentenceInfo = text.reduce((acc, cur, ci) => {
+			if(cur == "&") {
+				cur = "&amp;";
+			}
 			var glyphDataObj_acc = glyphDataArray.find(f=>f.char == acc);
 			var glyphDataObj_cur = glyphDataArray.find(f=>f.char == cur);
 			if(glyphDataObj_acc == null) { 
