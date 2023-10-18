@@ -22,6 +22,16 @@ void FileOperations::saveDataToFile(QString glyphID, QString dataToSave)
 		qFile.close();
 	}
 }
+void FileOperations::saveGlyphs(QString fileName, QString dataToSave)
+{
+	const QString qPath("./data/" + fileName);
+	QFile qFile(qPath);
+	if (qFile.open(QIODevice::WriteOnly)) 
+	{
+		QTextStream out(&qFile); out << dataToSave;
+		qFile.close();
+	}	
+}
 void FileOperations::saveSVG(QString dataToSave)
 {
 	const QString qPath("./data/savedGlyph.svg");

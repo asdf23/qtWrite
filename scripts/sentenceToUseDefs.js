@@ -86,9 +86,12 @@ function buildSentence(text, insertDOM, glyphDataArray, yOffset) {
 		// 		return acc
 		// 	}
 		// });
+		//console.log("glyphDataArray:", JSON.stringify(glyphDataArray));
 		var glyphDataObj_defaultChar = glyphDataArray.find(f=>f.char == " ");
+		//var glyphDataObj_ampersand = glyphDataArray.find(f=>f.char == "&amp;");
 		//console.log("default charcter", JSON.stringify(glyphDataObj_defaultChar));
 		sentenceInfo = text.reduce((acc, cur, ci) => {
+			//console.log("cur=", cur)
 			if(cur == "&") {
 				cur = "&amp;";
 			}
@@ -97,7 +100,7 @@ function buildSentence(text, insertDOM, glyphDataArray, yOffset) {
 			if(glyphDataObj_acc == null) { 
 				//console.log("bad character", acc);
 				glyphDataObj_acc = JSON.parse(JSON.stringify(glyphDataObj_defaultChar));
-				//console.log(`using default for '${acc}'`);
+				//console.log(`using default for '${JSON.stringify(acc[acc.length-1])}'`);
 				glyphDataObj_acc["useDefault"] = true;
 			} else {
 				glyphDataObj_acc["useDefault"] = false;
@@ -106,7 +109,7 @@ function buildSentence(text, insertDOM, glyphDataArray, yOffset) {
 				//console.log("bad character", cur); 
 				glyphDataObj_cur = JSON.parse(JSON.stringify(glyphDataObj_defaultChar));
 				glyphDataObj_cur["useDefault"] = true;
-				//console.log(`using default for '${cur}'`);
+				//console.log(`using default for (cur) '${JSON.stringify(cur)}'`);
 			} else {
 				glyphDataObj_cur["useDefault"] = false;
 			}

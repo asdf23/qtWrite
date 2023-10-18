@@ -149,6 +149,46 @@ function defMetaArrayToSVG(defMetaArray) {
 		}
 	}, null);
 }
+function defMetaArrayToSVGGlyphFormat(defMetaArray, pathCloserCallBack) {
+	/*
+		{
+			 id: glyphID
+			,dPath: MyScript.strokeToDPath(rectCanvas.strokes, sliderCurvature.value, sliderDistance.value)
+			,leftMargin: sliderLeftPadding.value
+			,rightMargin: sliderRightPadding.value
+			,anchorPoint: {
+				 y: sliderYOffset.value
+				,x: sliderLeftPadding.value
+				,width: Math.min(0,sliderLeftPadding.value)
+			}
+			//d,sketch: rectCanvas.strokes
+		}
+		//letterData["id"] = glyphObj.id
+		letterData["glyphName"] glyphObj.glyphName;
+		letterData["unicode"] glyphObj.unicode;
+		letterData["char"] glyphObj.char;
+	*/
+	//console.log("defMetaArray:", JSON.stringify(defMetaArray));
+	var glyphMissing = defMetaArray.find(f=> f.id == "glyph_space");
+	var results = `<missing-glyph horiz-adv-x="${glyphMissing.leftMargin+glyphMissing.rightMargin+glyphMissing.anchorPoint.width}"  d="${pathCloserCallBack(glyphMissing.dPath)}" />` +
+				`<glyph glyph-name="space" unicode=" " horiz-adv-x="${glyphMissing.leftMargin+glyphMissing.rightMargin+glyphMissing.anchorPoint.width}" d="M158 20" />` + //this hard-coded point removes an error expecting a value here downstream
+				`<glyph glyph-name=".notdef" horiz-adv-x="${glyphMissing.leftMargin+glyphMissing.rightMargin+glyphMissing.anchorPoint.width}"  d="${pathCloserCallBack(glyphMissing.dPath)}" />`;
+	return results + defMetaArray.reduce((acc,cur,i) => {
+		if(cur.char == "&") {
+			cur.char = "&amp;"
+		} else if(cur.char == "<") {
+			cur.char = "&lt;"
+		} else if(cur.char == ">") {
+			cur.char = "&gt;"
+		}
+		var escapedDataGlyphName = ((cur.char == "\"") ? `'${cur.char}'` : `"${cur.char}"`);
+		if(acc == null) {
+			return `<glyph glyph-name="${cur.glyphName}" unicode="${cur.unicode}" horiz-adv-x="${cur.leftMargin+cur.rightMargin+cur.anchorPoint.width}" d="${pathCloserCallBack(cur.dPath)}" />`;
+		} else {
+			return acc + `<glyph glyph-name="${cur.glyphName}" unicode="${cur.unicode}" horiz-adv-x="${cur.leftMargin+cur.rightMargin+cur.anchorPoint.width}" d="${pathCloserCallBack(cur.dPath)}" />`;
+		}
+	}, null);
+}
 function getOffsetForStrokeToCanvasLines(strokeArray, rightOffset) {
 	//MTL V-H
 	//MML HOF

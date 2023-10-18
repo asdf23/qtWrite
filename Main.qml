@@ -1,11 +1,13 @@
 import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
+//import QtQuick.Controls.Styles 1.4
 import FileOperations 1.0
 import "scripts/script.js" as MyScript
 import "scripts/simplifyScript.js" as SimplifyScript
 import "scripts/glypabet.js" as Glypabet
 import "scripts/sentenceToUseDefs.js" as SentenceBuilder
+import "scripts/reversePath.js" as PathReverser
 
 Window {
 	id: window
@@ -227,6 +229,31 @@ Window {
 			font.pointSize: 28
 			color: refreshButton.down ? "red" : (refreshButton.hovered ? "gray" : "white")
 			text: String.fromCodePoint(0x27f3)
+			anchors.centerIn: parent
+		}
+	}
+	Button {
+		property var isEnabled: false
+
+		id: saveAsFontButton
+		anchors.top: refreshButton.bottom
+		anchors.left: parent.right
+		anchors.leftMargin: -50
+		width: 50
+		height: 50
+		flat: true
+		onClicked: {
+			if(saveAsFontButton.isEnabled) {
+				popup.open()
+			}
+		}
+
+		Text {
+			renderType: Text.NativeRendering
+			font.family: icons.font.family
+			font.pointSize: 28
+			color: saveAsFontButton.isEnabled ?(saveAsFontButton.down ? "red" : (saveAsFontButton.hovered ? "gray" : "white")) : "darkgreen"
+			text: String.fromCodePoint(0x1F4BE)
 			anchors.centerIn: parent
 		}
 	}
@@ -554,6 +581,141 @@ Window {
 			}
 		}
 	}
+    Popup {
+        id: popup
+
+        parent: Overlay.overlay
+
+        x: Math.round((parent.width - width) / 2)
+        y: Math.round((parent.height - height) / 2)
+        width: (parent.width * 0.9)
+        height: (parent.height * 0.9)
+
+        Rectangle {
+        	id: rectPopupLine1
+			anchors.left: popup.left
+			anchors.right: popup.right
+			anchors.top: popup.top
+			anchors.rightMargin: 2
+			anchors.leftMargin: 2
+
+			width: (popup.width * 0.95)
+			height: 40
+			color: "pink"
+
+	        TextField {
+	        	id: textFontFileName
+				anchors.left: rectPopupLine1.left
+				anchors.right: rectPopupLine1.right
+				anchors.top: rectPopupLine1.top
+				anchors.bottom: rectPopupLine1.bottom
+				anchors.leftMargin: 2
+				anchors.rightMargin: 2
+				anchors.topMargin: 2
+				anchors.bottomMargin: 2
+
+		        placeholderText: qsTr("File name")
+			}
+        }
+
+        Rectangle {
+        	id: rectPopupLine2
+			anchors.left: popup.left
+			anchors.right: popup.right
+			anchors.top: rectPopupLine1.bottom
+			height: 40
+			width: (popup.width * 0.95)
+			color: "purple"
+			
+	        TextField {
+	        	id: textFontFamily
+				anchors.left: rectPopupLine2.left
+				anchors.right: rectPopupLine2.right
+				anchors.top: rectPopupLine2.top
+				anchors.bottom: rectPopupLine2.bottom
+				anchors.leftMargin: 2
+				anchors.rightMargin: 2
+				anchors.topMargin: 2
+				anchors.bottomMargin: 2
+
+		        placeholderText: qsTr("Font Family")
+			}
+		}
+
+        Rectangle {
+        	id: rectPopupLine3
+			anchors.left: popup.left
+			anchors.right: popup.right
+			anchors.top: rectPopupLine2.bottom
+			height: (popup.height / 4) - 80
+			width: (popup.width * 0.95)
+			
+			
+			TextArea {
+				id: textFontDesc
+				anchors.left: rectPopupLine3.left
+				anchors.right: rectPopupLine3.right
+				anchors.top: rectPopupLine3.top
+				anchors.bottom: rectPopupLine3.bottom
+				anchors.leftMargin: 2
+				anchors.rightMargin: 2
+				anchors.topMargin: 8
+				anchors.bottomMargin: 2
+			    placeholderText: qsTr("Enter description")
+			    text: "Enter a descripiton here"
+			}
+		}
+        Rectangle {
+        	id: rectPopupLine4
+			anchors.left: popup.left
+			anchors.right: popup.right
+			anchors.top: rectPopupLine3.bottom
+			anchors.topMargin: 20
+			height: (popup.height / 5) - 80
+			width: (popup.width * 0.95)
+			color: "#eee"
+
+			Button {
+				id: saveTTF
+				anchors.left: rectPopupLine4.left
+				anchors.top: rectPopupLine4.top
+				anchors.leftMargin: 4
+				anchors.rightMargin: 4
+				width: (popup.width * 0.95)
+				height: 40
+				flat: true
+				onClicked: { 
+					var fontMetaData = textFontDesc.text;
+					var fontNameIdentifier = textFontFamily.text.replace(/ /g,"_");
+					var fontFamily = textFontFamily.text;
+					var fontFileName = textFontFileName.text;
+					if(!fontFileName.endsWith(".svg")) {
+						fontFileName = fontFileName + ".svg";
+					}
+					var defMetas = qml_loadLetters(MyScript.currentLetterIndex);
+					var svgGlyphsString = MyScript.defMetaArrayToSVGGlyphFormat(defMetas, PathReverser.closePath);
+					var glyphMissing = defMetas.find(f=> f.id == "glyph_space");
+					var svgGlyphs = `<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" ><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">` + 
+									`<metadata>${fontMetaData}</metadata><defs>` +
+									`<font id="${fontNameIdentifier}" horiz-adv-x="${glyphMissing.leftMargin+glyphMissing.rightMargin+glyphMissing.anchorPoint.width}">` +
+									`<font-face font-family="${fontFamily}" font-weight="500" font-stretch="normal" units-per-em="1000" panose-1="2 0 6 3 0 0 0 0 0 0" ascent="685" descent="-315" x-height="360.997" cap-height="529" bbox="-116.001 -320 471 740" underline-thickness="50" underline-position="-100" stemh="35" stemv="41" unicode-range="U+0020-E02B" />`
+									+ svgGlyphsString + "</font></defs></svg>";
+
+					cppCallBackTest.saveGlyphs(fontFileName, svgGlyphs);
+				}
+
+				Text {
+					renderType: Text.NativeRendering
+					font.family: icons.font.family
+					font.pointSize: 24
+					color: saveTTF.down ? "red" : (saveTTF.hovered ? "gray" : "white")
+					text: "Generate TTF"
+					anchors.centerIn: parent
+				}
+			}
+		}
+
+    }
 	function qml_reDrawTextDisplay() {
 		//console.log("qml_reDrawTextDisplay()");
 		//console.log("sliderDistance.value=", sliderDistance.value);
@@ -613,10 +775,12 @@ Window {
 	}
 	function qml_loadLetters(currentLetterIndex) {
 		var results = [];
+		var anyMissed = false;
 		for(var i= -1; i<Glypabet.glyphs.length; i++) {
 			var glyphObj = Glypabet.glyphs.find(f=> f.char == (i==-1 ? " " : MyScript.letterArray[i]) );
 			if(glyphObj == null) {
 				console.log("failed to find", MyScript.letterArray[i]);
+				anyMissed = true;
 			}
 			var glyphID = glyphObj.id;
 			//console.log("loading", glyphID);
@@ -632,10 +796,15 @@ Window {
 				//console.log("loaded", defMeta);
 			}
 		}
+		if(!anyMissed) {
+			saveAsFontButton.isEnabled = true;
+			console.log("Enabling ttf");
+		}
 		return results;
 	}
 	Component.onCompleted: {
     	nextLetterButton.qml_setNextLetter(true);
     	qml_reDrawTextDisplay();
+    	popup.open()
     }
 }
