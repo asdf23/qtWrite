@@ -88,8 +88,14 @@ function buildSentence(text, insertDOM, glyphDataArray, yOffset) {
 		// });
 		//console.log("glyphDataArray:", JSON.stringify(glyphDataArray));
 		var glyphDataObj_defaultChar = glyphDataArray.find(f=>f.char == " ");
+		if(glyphDataObj_defaultChar == null) {
+		    glyphDataObj_defaultChar = {
+		        width: 0
+		    };
+		}
 		//var glyphDataObj_ampersand = glyphDataArray.find(f=>f.char == "&amp;");
 		//console.log("default charcter", JSON.stringify(glyphDataObj_defaultChar));
+		console.log("text:", text);
 		sentenceInfo = text.reduce((acc, cur, ci) => {
 			//console.log("cur=", cur)
 			if(cur == "&") {
@@ -99,7 +105,11 @@ function buildSentence(text, insertDOM, glyphDataArray, yOffset) {
 			var glyphDataObj_cur = glyphDataArray.find(f=>f.char == cur);
 			if(glyphDataObj_acc == null) { 
 				//console.log("bad character", acc);
-				glyphDataObj_acc = JSON.parse(JSON.stringify(glyphDataObj_defaultChar));
+				try {
+				    glyphDataObj_acc = JSON.parse(JSON.stringify(glyphDataObj_defaultChar));
+				} catch(ex) {
+				    console.log("JSON PARSE FAILED", ci, console.log(glyphDataObj_defaultChar));
+				}
 				//console.log(`using default for '${JSON.stringify(acc[acc.length-1])}'`);
 				glyphDataObj_acc["useDefault"] = true;
 			} else {
@@ -108,6 +118,11 @@ function buildSentence(text, insertDOM, glyphDataArray, yOffset) {
 			if(glyphDataObj_cur == null) { 
 				//console.log("bad character", cur); 
 				glyphDataObj_cur = JSON.parse(JSON.stringify(glyphDataObj_defaultChar));
+				try {
+				    glyphDataObj_cur = JSON.parse(JSON.stringify(glyphDataObj_defaultChar));
+				} catch(ex) {
+				    console.log("JSON PARSE FAILED", ci, console.log(glyphDataObj_defaultChar));
+				}
 				glyphDataObj_cur["useDefault"] = true;
 				//console.log(`using default for (cur) '${JSON.stringify(cur)}'`);
 			} else {

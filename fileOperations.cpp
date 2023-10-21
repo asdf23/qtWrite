@@ -1,9 +1,10 @@
 #include "fileOperations.h"
 #include <QDebug>
 #include <QFile>
+#include <QFileInfo>
+#include <QDir>
 
-FileOperations::FileOperations(QObject *parent):
-QObject(parent)
+FileOperations::FileOperations(QObject *parent): QObject(parent)
 {
 }
 
@@ -14,68 +15,89 @@ void FileOperations::printMessage(QString txt)
 
 void FileOperations::saveDataToFile(QString glyphID, QString dataToSave)
 {
-	const QString qPath("./data/" + glyphID + ".json");
-	QFile qFile(qPath);
-	if (qFile.open(QIODevice::WriteOnly)) 
+	QDir dir = QDir::currentPath();
+	if(! dir.cd("../data"))
 	{
-		QTextStream out(&qFile); out << dataToSave;
-		qFile.close();
+		return;
+	}
+	else
+	{
+		QFile qFile(dir.absoluteFilePath(glyphID + ".json"));
+		if(qFile.open(QIODevice::WriteOnly)) 
+		{
+			QTextStream out(&qFile); out << dataToSave;
+			qFile.close();
+		}
 	}
 }
 void FileOperations::saveGlyphs(QString fileName, QString dataToSave)
 {
-	const QString qPath("./data/" + fileName);
-	QFile qFile(qPath);
-	if (qFile.open(QIODevice::WriteOnly)) 
+	QDir dir = QDir::currentPath();
+	if(! dir.cd("../data"))
 	{
-		QTextStream out(&qFile); out << dataToSave;
-		qFile.close();
-	}	
+		return;
+	}
+	else
+	{
+		QFile qFile(dir.absoluteFilePath(fileName));
+		if(qFile.open(QIODevice::WriteOnly)) 
+		{
+			QTextStream out(&qFile); out << dataToSave;
+			qFile.close();
+		}
+	}
 }
 void FileOperations::saveSVG(QString dataToSave)
 {
-	const QString qPath("./data/savedGlyph.svg");
-	QFile qFile(qPath);
-	if (qFile.open(QIODevice::WriteOnly)) 
+	QDir dir = QDir::currentPath();
+	if(! dir.cd("../data"))
 	{
-		QTextStream out(&qFile); out << dataToSave;
-		qFile.close();
+		return;
+	}
+	else
+	{
+		QFile qFile(dir.absoluteFilePath("savedGlyph.svg"));
+		if(qFile.open(QIODevice::WriteOnly)) 
+		{
+			QTextStream out(&qFile); out << dataToSave;
+			qFile.close();
+		}
 	}
 }
 QString FileOperations::loadLetter(QString glyphID)
 {
-	const QString qPath("./data/" + glyphID + ".json");
-	QFile qFile(qPath);
-	if (!qFile.open(QIODevice::ReadOnly | QIODevice::Text))
-	{
-    	const QString defaultValue("null");
-    	return defaultValue;
-	}
-	else
-	{
-		QTextStream in(&qFile);
-		QString fileContents = in.readAll();
-		qFile.close();
-		return fileContents;
-	}
+	//working 6.5 const QString qPath("/home/user1/dev/pub/qtWrite/data/" + glyphID + ".json");
+		//failed 6.5 const QString qPath("qrc:///qml/data/" + glyphID + ".json");
+		//failed 6.5 const QString qPath("data/" + glyphID + ".json");
+		//failed 6.5 const QString qPath("qrc://data/" + glyphID + ".json");
+		QDir dir = QDir::currentPath();
+		if(! dir.cd("../data") ) //up from build 
+		{
+			//return "failed dir DNE " + dir.absolutePath();
+			return "null";
+		} 
+		else 
+		{
+			QFile qFile(dir.absoluteFilePath(glyphID + ".json"));
+			if(qFile.exists()) 
+			{
+				if (!qFile.open(QIODevice::ReadOnly | QIODevice::Text))
+				{
+					return "{}";
+				}
+				else
+				{
+					QTextStream in(&qFile);
+					QString fileContents = in.readAll();
+					qFile.close();
+					return fileContents;
+				}
+			}
+			else 
+			{
+			  return "null";
+			}
+		}
 }
-QString FileOperations::loadDataFromFile()
-{
-	const QString qPath("fontData.json");
-	QFile qFile(qPath);
-	if (!qFile.open(QIODevice::ReadOnly | QIODevice::Text))
-	{
-    	const QString defaultValue("{}");
-    	return defaultValue;
-	}
-	else
-	{
-		QTextStream in(&qFile);
-		QString fileContents = in.readAll();
-		qFile.close();
-		return fileContents;
-	}
-}
-
 //virtual FileOperations::~FileOperations() {};
 //void FileOperations::~FileOperations() {};

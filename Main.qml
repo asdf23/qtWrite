@@ -762,7 +762,7 @@ Window {
 		var glyphID = glyphObj.id;
 		//console.log("loading", glyphID);
 		var defMeta = cppCallBackTest.loadLetter(glyphID);
-		//console.log("loaded", defMeta);
+		console.log("loaded", glyphID, defMeta);
 		defMeta = JSON.parse(defMeta);
 		if(defMeta != null) {
 			console.log("found letter on disk loading..");
@@ -783,7 +783,7 @@ Window {
 				anyMissed = true;
 			}
 			var glyphID = glyphObj.id;
-			//console.log("loading", glyphID);
+			console.log("loading", glyphID);
 			var defMeta = cppCallBackTest.loadLetter(glyphID);
 			if(defMeta != "null") {
 				//let letterData = cppCallBackTest.loadLetter(glyphID);
@@ -793,7 +793,9 @@ Window {
 				defMeta["unicode"] = glyphObj.unicode;
 				defMeta["char"] = glyphObj.char;
 				results.push( defMeta );
-				//console.log("loaded", defMeta);
+				console.log("loaded", defMeta);
+			} else {
+				console.log("failed to load", JSON.stringify(glyphObj));
 			}
 		}
 		if(!anyMissed) {
@@ -803,8 +805,7 @@ Window {
 		return results;
 	}
 	Component.onCompleted: {
-    	nextLetterButton.qml_setNextLetter(true);
-    	qml_reDrawTextDisplay();
-    	popup.open()
-    }
+ 	   	nextLetterButton.qml_setNextLetter(true);
+ 	   	qml_reDrawTextDisplay();
+     }
 }
