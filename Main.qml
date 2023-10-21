@@ -805,7 +805,7 @@ Window {
 		return results;
 	}
 	Component.onCompleted: {
- 	   	nextLetterButton.qml_setNextLetter(true);
- 	   	qml_reDrawTextDisplay();
-     }
+    	nextLetterButton.qml_setNextLetter(true);
+    	qml_reDrawTextDisplay();
+    }
 }

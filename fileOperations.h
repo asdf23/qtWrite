@@ -2,6 +2,7 @@
 #define FILEOPERATIONS_H
 
 #include <QObject>
+#include <QDir>
 
 class FileOperations : public QObject
 {
@@ -13,7 +14,8 @@ class FileOperations : public QObject
 		Q_INVOKABLE void saveGlyphs(QString txt1, QString txt2);
 		Q_INVOKABLE void saveSVG(QString txt);
 		Q_INVOKABLE QString loadLetter(QString txt);
-
+	private:
+		QDir getDataDirectory();
 	signals:
 	public slots:
 
