@@ -671,14 +671,33 @@ Window {
 			anchors.right: popup.right
 			anchors.top: rectPopupLine3.bottom
 			anchors.topMargin: 20
-			height: (popup.height / 5) - 80
+			height: (popup.height / 4) - 80
+			width: (popup.width * 0.95)
+			color: "#ccc"
+
+			Dial {
+				id: dialAngle
+				anchors.left: rectPopupLine4.left
+				anchors.top: rectPopupLine4.top
+				anchors.topMargin: 2
+				height: rectPopupLine4.height
+				width: rectPopupLine4.width * 0.5
+			}
+		}
+        Rectangle {
+        	id: rectPopupLine5
+			anchors.left: popup.left
+			anchors.right: popup.right
+			anchors.top: rectPopupLine4.bottom
+			anchors.topMargin: 20
+			height: 50
 			width: (popup.width * 0.95)
 			color: "#eee"
 
 			Button {
 				id: saveTTF
-				anchors.left: rectPopupLine4.left
-				anchors.top: rectPopupLine4.top
+				anchors.left: rectPopupLine5.left
+				anchors.top: rectPopupLine5.top
 				anchors.leftMargin: 4
 				anchors.rightMargin: 4
 				width: (popup.width * 0.95)
@@ -807,5 +826,6 @@ Window {
 	Component.onCompleted: {
     	nextLetterButton.qml_setNextLetter(true);
     	qml_reDrawTextDisplay();
+    	popup.open()
     }
 }
