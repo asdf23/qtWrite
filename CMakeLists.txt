@@ -27,6 +27,7 @@ qt_add_qml_module(writeboard
               "scripts/glypabet.js"
               "scripts/sentenceToUseDefs.js"
               "scripts/reversePath.js"
+              "scripts/flipDPath.js"
 )
 
 set_target_properties(writeboard PROPERTIES

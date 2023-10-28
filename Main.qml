@@ -8,6 +8,7 @@ import "scripts/simplifyScript.js" as SimplifyScript
 import "scripts/glypabet.js" as Glypabet
 import "scripts/sentenceToUseDefs.js" as SentenceBuilder
 import "scripts/reversePath.js" as PathReverser
+import "scripts/flipDPath.js" as PathFliper
 
 Window {
 	id: window
@@ -712,7 +713,7 @@ Window {
 						fontFileName = fontFileName + ".svg";
 					}
 					var defMetas = qml_loadLetters(MyScript.currentLetterIndex);
-					var svgGlyphsString = MyScript.defMetaArrayToSVGGlyphFormat(defMetas, PathReverser.closePath);
+					var svgGlyphsString = MyScript.defMetaArrayToSVGGlyphFormat(defMetas, PathReverser.closePath, PathFliper.flipYOnDPath);
 					var glyphMissing = defMetas.find(f=> f.id == "glyph_space");
 					var svgGlyphs = `<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" ><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">` + 
 									`<metadata>${fontMetaData}</metadata><defs>` +
