@@ -4,7 +4,8 @@ project(Writeboard VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.2 REQUIRED COMPONENTS Quick)
+find_package(Qt6 6.2 REQUIRED COMPONENTS Quick )
+# find_package(Qt6 6.2 REQUIRED COMPONENTS QuickControls2 )
 
 # qt_standard_project_setup()
 set(CMAKE_AUTOMOC ON)
@@ -25,6 +26,8 @@ qt_add_qml_module(writeboard
               "scripts/simplifyScript.js"
               "scripts/glypabet.js"
               "scripts/sentenceToUseDefs.js"
+              "scripts/reversePath.js"
+              "scripts/flipDPath.js"
 )
 
 set_target_properties(writeboard PROPERTIES
@@ -38,6 +41,8 @@ set_target_properties(writeboard PROPERTIES
 target_link_libraries(writeboard
     PRIVATE Qt6::Quick
 )
+# target_link_libraries(writeboard PRIVATE Qt6::Gui Qt6::Quick)
+# target_link_libraries(writeboard PRIVATE Qt6::Quick Qt6::QuickControls2)
 
 install(TARGETS writeboard
     BUNDLE DESTINATION .
