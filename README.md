@@ -1,5 +1,7 @@
 # qtWrite
 Single stroke font generator
+![image](https://github.com/asdf23/qtWrite/assets/4165735/1320c4b3-29e8-4851-9ed5-810d3c72feb4)
+
 
 Placeholder for single stroke font generator.
 Write text in your own handwriting using a plotter, or generate a woff2 font that mimicks your handwriting.
