@@ -401,12 +401,16 @@
   };
 
 
-
-function closePath(forwardPath) {
+function closePath(forwardPath, offseterCallback, offsetAmt, xOffset, yOffset) {
 	let mSes = forwardPath.replace(/[^m]/gi,"").split("");
 	let mParts = forwardPath.split(/m/gi).filter(f=> f.length > 0).map( (m,i)=> { return mSes[i] + m })
 	let results = mParts.map(m => {
 		let reversed = reverseSubPath(m);
+    if((offsetAmt > 0) && offseterCallback != null) {
+      console.log("preoffset", reversed);
+      reversed = offseterCallback(reversed, xOffset, yOffset);
+      console.log("postoffset", reversed);
+    }
 		if( reversed.substr(0,1) == "m" ) {
 			reversed = "l" + reversed.substr(1);
 		} else {
@@ -414,6 +418,6 @@ function closePath(forwardPath) {
 		}
 		return m + " " + reversed + " z";
 	});
-	let reversedDMed = results.join(" ");	
+	let reversedDMed = results.join(" ");
 	return reversedDMed;
 }

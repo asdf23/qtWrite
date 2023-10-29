@@ -149,7 +149,7 @@ function defMetaArrayToSVG(defMetaArray) {
 		}
 	}, null);
 }
-function defMetaArrayToSVGGlyphFormat(defMetaArray, pathCloserCallBack, pathFlipperCallback) {
+function defMetaArrayToSVGGlyphFormat(defMetaArray, pathCloserCallBack, pathOffsetCallback, pathFlipperCallback, offsetAmount, offsetX, offsetY) {
 	/*
 		{
 			 id: glyphID
@@ -170,9 +170,9 @@ function defMetaArrayToSVGGlyphFormat(defMetaArray, pathCloserCallBack, pathFlip
 	*/
 	//console.log("defMetaArray:", JSON.stringify(defMetaArray));
 	var glyphMissing = defMetaArray.find(f=> f.id == "glyph_space");
-	var results = `<missing-glyph horiz-adv-x="${glyphMissing.leftMargin+glyphMissing.rightMargin+glyphMissing.anchorPoint.width}"  d="${pathFlipperCallback(pathCloserCallBack(glyphMissing.dPath),glyphMissing.anchorPoint.y)}" />` +
+	var results = `<missing-glyph horiz-adv-x="${glyphMissing.leftMargin+glyphMissing.rightMargin+glyphMissing.anchorPoint.width}"  d="${pathFlipperCallback(pathCloserCallBack(glyphMissing.dPath, pathOffsetCallback, offsetAmount, offsetX, offsetY),glyphMissing.anchorPoint.y)}" />` +
 				`<glyph glyph-name="space" unicode=" " horiz-adv-x="${glyphMissing.leftMargin+glyphMissing.rightMargin+glyphMissing.anchorPoint.width}" d="M158 20" />` + //this hard-coded point removes an error expecting a value here downstream
-				`<glyph glyph-name=".notdef" horiz-adv-x="${glyphMissing.leftMargin+glyphMissing.rightMargin+glyphMissing.anchorPoint.width}"  d="${pathFlipperCallback(pathCloserCallBack(glyphMissing.dPath),glyphMissing.anchorPoint.y)}" />`;
+				`<glyph glyph-name=".notdef" horiz-adv-x="${glyphMissing.leftMargin+glyphMissing.rightMargin+glyphMissing.anchorPoint.width}"  d="${pathFlipperCallback(pathCloserCallBack(glyphMissing.dPath, pathOffsetCallback, offsetAmount, offsetX, offsetY),glyphMissing.anchorPoint.y)}" />`;
 	return results + defMetaArray.reduce((acc,cur,i) => {
 		if(cur.char == "&") {
 			cur.char = "&amp;"
@@ -183,9 +183,9 @@ function defMetaArrayToSVGGlyphFormat(defMetaArray, pathCloserCallBack, pathFlip
 		}
 		var escapedDataGlyphName = ((cur.char == "\"") ? `'${cur.char}'` : `"${cur.char}"`);
 		if(acc == null) {
-			return `<glyph glyph-name="${cur.glyphName}" unicode="${cur.unicode}" horiz-adv-x="${cur.leftMargin+cur.rightMargin+cur.anchorPoint.width}" d="${pathFlipperCallback(pathCloserCallBack(cur.dPath),cur.anchorPoint.y)}" />`;
+			return `<glyph glyph-name="${cur.glyphName}" unicode="${cur.unicode}" horiz-adv-x="${cur.leftMargin+cur.rightMargin+cur.anchorPoint.width}" d="${pathFlipperCallback(pathCloserCallBack(cur.dPath, pathOffsetCallback, offsetAmount, offsetX, offsetY),cur.anchorPoint.y)}" />`;
 		} else {
-			return acc + `<glyph glyph-name="${cur.glyphName}" unicode="${cur.unicode}" horiz-adv-x="${cur.leftMargin+cur.rightMargin+cur.anchorPoint.width}" d="${pathFlipperCallback(pathCloserCallBack(cur.dPath),cur.anchorPoint.y)}" />`;
+			return acc + `<glyph glyph-name="${cur.glyphName}" unicode="${cur.unicode}" horiz-adv-x="${cur.leftMargin+cur.rightMargin+cur.anchorPoint.width}" d="${pathFlipperCallback(pathCloserCallBack(cur.dPath, pathOffsetCallback, offsetAmount, offsetX, offsetY),cur.anchorPoint.y)}" />`;
 		}
 	}, null);
 }
