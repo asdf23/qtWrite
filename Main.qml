@@ -376,7 +376,7 @@ Window {
             anchors.top: parent.top
             x: (parent.width/10)
             onMoved: () => {
-            	console.log("sliderDistance", sliderDistance.value);
+            	//console.log("sliderDistance", sliderDistance.value);
             	qml_reDrawTextDisplay();
             }
         }
@@ -391,7 +391,7 @@ Window {
             anchors.top: sliderDistance.bottom
             x: (parent.width/10)
             onMoved: () => {
-            	console.log("sliderCurvature", sliderCurvature.value);
+            	//console.log("sliderCurvature", sliderCurvature.value);
             	qml_reDrawTextDisplay();
             }
         }
@@ -406,7 +406,7 @@ Window {
             anchors.top: sliderCurvature.bottom
             x: (parent.width/10)
             onMoved: () => {
-            	console.log("sliderLeftPadding", sliderLeftPadding.value);
+            	//console.log("sliderLeftPadding", sliderLeftPadding.value);
             	rectCanvas.strokes = MyScript.resetStrokesLeftMinXTo(rectCanvas.strokes, sliderLeftPadding.value);
 				mycanvas.requestPaint();
 				mycanvas.qml_clear();
@@ -425,7 +425,7 @@ Window {
             anchors.top: sliderLeftPadding.bottom
             x: (parent.width/10)
             onMoved: () => {
-            	console.log("sliderRightPadding", sliderRightPadding.value);
+            	//console.log("sliderRightPadding", sliderRightPadding.value);
             	//cppCallBackTest.printMessage("FROM QML to CPP");
             	//cppCallBackTest.saveDataToFile(JSON.stringify({"test":"successful"}));
             	//console.log(cppCallBackTest.loadDataFromFile() + "---");
@@ -449,7 +449,7 @@ Window {
             y: parent.height / 4
             x: (parent.width/10)*9
             onMoved: () => {
-            	console.log("sliderYOffset.value", sliderYOffset.value);
+            	//console.log("sliderYOffset.value", sliderYOffset.value);
             	mycanvas.qml_clear();
             	mycanvas.qml_resetDrawing();
             	qml_reDrawTextDisplay();
@@ -691,14 +691,39 @@ Window {
 			anchors.right: popup.right
 			anchors.top: rectPopupLine4.bottom
 			anchors.topMargin: 20
+			height: 20
+			width: (popup.width * 0.95)
+			color: "#eee"
+
+			Slider {
+				id: sliderTTFOffset
+	            from: 0.0
+	            value: 0.0
+	            to: 10.0
+	            stepSize: 0.5
+	            height: parent.height
+	            width: rectPopupLine5.width - 20
+	            anchors.top: rectPopupLine5.top
+	            onMoved: () => {
+	            	console.log("sliderTTFOffset", sliderTTFOffset.value);
+	            	//qml_reDrawTextDisplay();
+	            }
+			}
+		}
+        Rectangle {
+        	id: rectPopupLine6
+			anchors.left: popup.left
+			anchors.right: popup.right
+			anchors.top: rectPopupLine5.bottom
+			anchors.topMargin: 20
 			height: 50
 			width: (popup.width * 0.95)
 			color: "#eee"
 
 			Button {
 				id: saveTTF
-				anchors.left: rectPopupLine5.left
-				anchors.top: rectPopupLine5.top
+				anchors.left: rectPopupLine6.left
+				anchors.top: rectPopupLine6.top
 				anchors.leftMargin: 4
 				anchors.rightMargin: 4
 				width: (popup.width * 0.95)
@@ -709,19 +734,25 @@ Window {
 					var fontNameIdentifier = textFontFamily.text.replace(/ /g,"_");
 					var fontFamily = textFontFamily.text;
 					var fontFileName = textFontFileName.text;
+					var offsetAmount = sliderTTFOffset.value;
+					var offsetAngle = dialAngle.value;
+					var yOffset = Math.sin((offsetAngle)/(180/Math.PI)) * offsetAmount;
+					var xOffset = Math.cos((offsetAngle)/(180/Math.PI)) * offsetAmount;
 					if(!fontFileName.endsWith(".svg")) {
 						fontFileName = fontFileName + ".svg";
 					}
-					var defMetas = qml_loadLetters(MyScript.currentLetterIndex);
-					var svgGlyphsString = MyScript.defMetaArrayToSVGGlyphFormat(defMetas, PathReverser.closePath, PathFliper.flipYOnDPath);
-					var glyphMissing = defMetas.find(f=> f.id == "glyph_space");
-					var svgGlyphs = `<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" ><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">` + 
-									`<metadata>${fontMetaData}</metadata><defs>` +
-									`<font id="${fontNameIdentifier}" horiz-adv-x="${glyphMissing.leftMargin+glyphMissing.rightMargin+glyphMissing.anchorPoint.width}">` +
-									`<font-face font-family="${fontFamily}" font-weight="500" font-stretch="normal" units-per-em="100" panose-1="2 0 6 3 0 0 0 0 0 0" ascent="150" descent="-30" x-height="160" cap-height="129" bbox="-116.001 -120 471 240" underline-thickness="50" underline-position="-100" stemh="35" stemv="10" unicode-range="U+0020-E02B" />`
-									+ svgGlyphsString + "</font></defs></svg>";
+					if((fontMetaData.length * fontNameIdentifier.length * fontFamily.length *fontFileName.length) > 0) {
+						var defMetas = qml_loadLetters(MyScript.currentLetterIndex);
+						var svgGlyphsString = MyScript.defMetaArrayToSVGGlyphFormat(defMetas, PathReverser.closePath, PathFliper.offsetPath, PathFliper.flipYOnDPath, offsetAmount, offsetAmount == 0 ? 0 : xOffset, offsetAmount == 0 ? 0 : yOffset);
+						var glyphMissing = defMetas.find(f=> f.id == "glyph_space");
+						var svgGlyphs = `<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" ><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">` + 
+										`<metadata>${fontMetaData}</metadata><defs>` +
+										`<font id="${fontNameIdentifier}" horiz-adv-x="${glyphMissing.leftMargin+glyphMissing.rightMargin+glyphMissing.anchorPoint.width}">` +
+										`<font-face font-family="${fontFamily}" font-weight="500" font-stretch="normal" units-per-em="100" panose-1="2 0 6 3 0 0 0 0 0 0" ascent="150" descent="-30" x-height="160" cap-height="129" bbox="-116.001 -120 471 240" underline-thickness="50" underline-position="-100" stemh="35" stemv="10" unicode-range="U+0020-E02B" />`
+										+ svgGlyphsString + "</font></defs></svg>";
 
-					cppCallBackTest.saveGlyphs(fontFileName, svgGlyphs);
+						cppCallBackTest.saveGlyphs(fontFileName, svgGlyphs);
+					}
 				}
 
 				Text {
@@ -827,6 +858,6 @@ Window {
 	Component.onCompleted: {
     	nextLetterButton.qml_setNextLetter(true);
     	qml_reDrawTextDisplay();
-    	popup.open()
+    	//popup.open()
     }
 }
