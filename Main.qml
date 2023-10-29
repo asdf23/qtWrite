@@ -718,7 +718,7 @@ Window {
 					var svgGlyphs = `<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" ><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">` + 
 									`<metadata>${fontMetaData}</metadata><defs>` +
 									`<font id="${fontNameIdentifier}" horiz-adv-x="${glyphMissing.leftMargin+glyphMissing.rightMargin+glyphMissing.anchorPoint.width}">` +
-									`<font-face font-family="${fontFamily}" font-weight="500" font-stretch="normal" units-per-em="1000" panose-1="2 0 6 3 0 0 0 0 0 0" ascent="685" descent="-315" x-height="360.997" cap-height="529" bbox="-116.001 -320 471 740" underline-thickness="50" underline-position="-100" stemh="35" stemv="41" unicode-range="U+0020-E02B" />`
+									`<font-face font-family="${fontFamily}" font-weight="500" font-stretch="normal" units-per-em="100" panose-1="2 0 6 3 0 0 0 0 0 0" ascent="150" descent="-30" x-height="160" cap-height="129" bbox="-116.001 -120 471 240" underline-thickness="50" underline-position="-100" stemh="35" stemv="10" unicode-range="U+0020-E02B" />`
 									+ svgGlyphsString + "</font></defs></svg>";
 
 					cppCallBackTest.saveGlyphs(fontFileName, svgGlyphs);
