@@ -678,11 +678,19 @@ Window {
 
 			Dial {
 				id: dialAngle
+				from: 0.0
+				value: 0.0
+				to: 360.0
+				stepSize: 0.5
 				anchors.left: rectPopupLine4.left
 				anchors.top: rectPopupLine4.top
 				anchors.topMargin: 2
 				height: rectPopupLine4.height
 				width: rectPopupLine4.width * 0.5
+				onMoved: () => {
+					console.log("dialAngle", dialAngle.value);
+					//qml_reDrawTextDisplay();
+				}
 			}
 		}
         Rectangle {
