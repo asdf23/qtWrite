@@ -91,7 +91,7 @@ Window {
 				console.log("loading old letter");
 				qml_reDrawTextDisplay();
 			} else {
-				image1.source = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><path fill="orange" stroke="royalblue" d="L 150 50 L 100 150 z" /></svg>`
+				image1.source = cppCallBackTest.loadHelpSVG();
 			}
 			mycanvas.qml_clear();
 		}
@@ -181,10 +181,7 @@ Window {
 			rectCanvas.strokes = [];
 			rectCanvas.currentStrokePoints = [];
 			//sliderDistance.to = 1;
-			image1.source = `data:image/svg+xml;utf8,
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200">
-<path fill="orange" stroke="royalblue" d="L 150 50 L 100 150 z" />
-</svg>`
+			image1.source = cppCallBackTest.loadHelpSVG();
 			mycanvas.qml_clear();
 		}
 
@@ -275,11 +272,7 @@ Window {
 			width: parent.width
 			height: parent.height
 			anchors.fill: parent
-			source:
-`data:image/svg+xml;utf8,
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200">
-<path fill="orange" stroke="royalblue" d="L 150 50 L 100 150 z" />
-</svg>`
+			source: cppCallBackTest.loadHelpSVG();
 		}
 	}
 	Rectangle {

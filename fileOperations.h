@@ -14,6 +14,7 @@ class FileOperations : public QObject
 		Q_INVOKABLE void saveGlyphs(QString txt1, QString txt2);
 		Q_INVOKABLE void saveSVG(QString txt);
 		Q_INVOKABLE QString loadLetter(QString txt);
+		Q_INVOKABLE QString loadHelpSVG();
 	private:
 		QDir getDataDirectory();
 	signals:

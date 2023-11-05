@@ -91,5 +91,28 @@ QString FileOperations::loadLetter(QString glyphID)
 	  return "null";
 	}
 }
+QString FileOperations::loadHelpSVG()
+{
+	QDir dir = getDataDirectory();
+	QFile qFile(dir.absoluteFilePath("helpDoc.svg"));
+	if(qFile.exists()) 
+	{
+		if (!qFile.open(QIODevice::ReadOnly | QIODevice::Text))
+		{
+			return "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'><path fill='orange' stroke='royalblue' d='L 150 50 L 100 150 z' /></svg>";
+		}
+		else
+		{
+			QTextStream in(&qFile);
+			QString fileContents = in.readAll();
+			qFile.close();
+			return "data:image/svg+xml;utf8," + fileContents;
+		}
+	}
+	else 
+	{
+	  return "null";
+	}
+}
 //virtual FileOperations::~FileOperations() {};
 //void FileOperations::~FileOperations() {};
