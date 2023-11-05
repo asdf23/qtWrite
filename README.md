@@ -6,6 +6,9 @@ Write text in your own handwriting using a plotter, or generate a woff2 font tha
 
 This code is in a alpha state. What you can do currently is to generate an SVG document containing words using your own handwriting. To do that it takes a two step process.
 
+![image](https://github.com/asdf23/qtWrite/assets/4165735/9c530076-cba7-4c77-a5c6-903a12780701)
+
+
 To come:
 Generate a woff font with a collasped border. 
 Streamline process to generate SVG document.
