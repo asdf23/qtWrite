@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="8.5in"
+   height="11in"
+   viewBox="0 0 215.9 279.4"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="fontTester.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="2.262702"
+     inkscape:cx="500.72877"
+     inkscape:cy="283.95254"
+     inkscape:window-width="3840"
+     inkscape:window-height="1579"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     units="in" />
+  <defs
+     id="defs2">
+    <rect
+       x="5.2198181"
+       y="6.104538"
+       width="793.40228"
+       height="1120.1796"
+       id="rect3385" />
+    <rect
+       x="5.2198181"
+       y="6.104538"
+       width="793.40228"
+       height="1120.1796"
+       id="rect3385-3" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,63.139957,1.771589)"
+       id="text3383"
+       style="font-size:26.6667px;line-height:1.25;font-family:HirokiAge7;-inkscape-font-specification:HirokiAge7;word-spacing:0px;white-space:pre;shape-inside:url(#rect3385);stroke-width:0.0982677;stroke-miterlimit:4;stroke-dasharray:none"><tspan
+         x="5.2207031"
+         y="31.661057"
+         id="tspan15533"><tspan
+           style="font-family:test13;-inkscape-font-specification:test13"
+           id="tspan15531">abcdefghijklmnopqrstuvwxyz
+</tspan></tspan><tspan
+         x="5.2207031"
+         y="65.883324"
+         id="tspan15537"><tspan
+           style="font-family:test13;-inkscape-font-specification:test13"
+           id="tspan15535">ABCDEFGHIKJLMNOPQRSTUVWXYZ
+</tspan></tspan><tspan
+         x="5.2207031"
+         y="100.10559"
+         id="tspan15541"><tspan
+           style="font-family:test13;-inkscape-font-specification:test13"
+           id="tspan15539">0123456789
+</tspan></tspan><tspan
+         x="5.2207031"
+         y="134.32786"
+         id="tspan15545"><tspan
+           style="font-family:test13;-inkscape-font-specification:test13"
+           id="tspan15543">`~!@#$%^&amp;*()_+[]{}\|;':&quot;,./&lt;&gt;?
+</tspan></tspan><tspan
+         x="5.2207031"
+         y="168.55013"
+         id="tspan15549"><tspan
+           style="font-family:test13;-inkscape-font-specification:test13"
+           id="tspan15547">pulbic static main(args[])
+</tspan></tspan><tspan
+         x="5.2207031"
+         y="202.77238"
+         id="tspan15553"><tspan
+           style="font-family:test13;-inkscape-font-specification:test13"
+           id="tspan15551">{
+</tspan></tspan><tspan
+         x="5.2207031"
+         y="236.99464"
+         id="tspan15557"><tspan
+           style="font-family:test13;-inkscape-font-specification:test13"
+           id="tspan15555"> for(int i=0; i&lt;p.length; i++) {
+</tspan></tspan><tspan
+         x="5.2207031"
+         y="271.2169"
+         id="tspan15561"><tspan
+           style="font-family:test13;-inkscape-font-specification:test13"
+           id="tspan15559">  var x=p[i];
+</tspan></tspan><tspan
+         x="5.2207031"
+         y="305.43916"
+         id="tspan15565"><tspan
+           style="font-family:test13;-inkscape-font-specification:test13"
+           id="tspan15563">  console.log(`${x}`);
+</tspan></tspan><tspan
+         x="5.2207031"
+         y="339.66142"
+         id="tspan15569"><tspan
+           style="font-family:test13;-inkscape-font-specification:test13"
+           id="tspan15567"> }
+</tspan></tspan><tspan
+         x="5.2207031"
+         y="373.88368"
+         id="tspan15573"><tspan
+           style="font-family:test13;-inkscape-font-specification:test13"
+           id="tspan15571">}</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.68149268,0,0,0.8736455,1.7573719,-0.57961892)"
+       id="text3383-6"
+       style="font-size:26.6667px;line-height:1.25;font-family:HirokiAge7;-inkscape-font-specification:HirokiAge7;word-spacing:0px;white-space:pre;shape-inside:url(#rect3385-3);stroke-width:0.0982677;stroke-miterlimit:4;stroke-dasharray:none"><tspan
+         x="5.2207031"
+         y="31.661057"
+         id="tspan15577"><tspan
+           style="font-family:test8;-inkscape-font-specification:test8;fill:none;stroke:#000000"
+           id="tspan15575">abcdefghijklmnopqrstuvwxyz
+</tspan></tspan><tspan
+         x="5.2207031"
+         y="65.883324"
+         id="tspan15581"><tspan
+           style="font-family:test8;-inkscape-font-specification:test8;fill:none;stroke:#000000"
+           id="tspan15579">ABCDEFGHIKJLMNOPQRSTUVWXYZ
+</tspan></tspan><tspan
+         x="5.2207031"
+         y="100.10559"
+         id="tspan15585"><tspan
+           style="font-family:test8;-inkscape-font-specification:test8;fill:none;stroke:#000000"
+           id="tspan15583">0123456789
+</tspan></tspan><tspan
+         x="5.2207031"
+         y="134.32786"
+         id="tspan15589"><tspan
+           style="font-family:test8;-inkscape-font-specification:test8;fill:none;stroke:#000000"
+           id="tspan15587">`~!@#$%^&amp;*()_+[]{}\|;':&quot;,./&lt;&gt;?</tspan></tspan></text>
+  </g>
+</svg>
