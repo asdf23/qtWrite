@@ -1,5 +1,7 @@
 # qtWrite
 Single stroke font generator
+![image](https://github.com/asdf23/qtWrite/assets/4165735/1320c4b3-29e8-4851-9ed5-810d3c72feb4)
+
 
 Placeholder for single stroke font generator.
 Write text in your own handwriting using a plotter, or generate a woff2 font that mimicks your handwriting.
@@ -45,6 +47,10 @@ To use:
 		In a future version the next button (save - missing) will generate a woff file.
 		To generate gcode you could use a tool like juicy. I would integrate this but currently there is no GUI to capture the text.
 		
+To generate a TTF font:
+Install svg2ttf `npm install -g svg2ttf`
+Load up the preview mode in this tool, click the Save icon, Add a name, family and descripton. Optionally set a text rotation and a width. This is required if you want to see the fonts in a tool like word since the lines have a width of 0. Run `svg2ttf data/myFont.svg myFont.ttf` then install the font depending on the OS.
+
 Need help:
 Not sure how to resolve dependanies and run on other OS's
 Not familiar with QML, I want to open a sepate window, for unrelated GUI inputs
