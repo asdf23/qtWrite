@@ -61,3 +61,5 @@ The application is pretty ugly, The following screen shows a preview of the text
 
 Each letter is captured then edited for spacing / boarders
 ![image](https://github.com/asdf23/qtWrite/assets/4165735/2014b5cd-911c-4e3d-9e69-3a52e8ccc352)
+
+Depth, Clearance, Left/Right padding can be adjusted so that each letter is aligned.
